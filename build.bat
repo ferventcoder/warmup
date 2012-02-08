@@ -15,6 +15,13 @@ SET build.config.settings="%DIR%\settings\UppercuT.config"
 
 %NANT% -logger:NAnt.Core.DefaultLogger -quiet /f:"%BUILD_DIR%build\default.build" -D:build.config.settings=%build.config.settings% %*
 
+echo BUILDING
+msbuild
+
+echo.
+echo RUNNING TESTS
+lib\nspec.0.9.58\tools\NSpecRunner.exe warmup.Tests\bin\Debug\warmup.Tests.dll
+
 if %ERRORLEVEL% NEQ 0 goto errors
 
 goto finish
@@ -23,6 +30,7 @@ goto finish
 echo.
 echo Usage: build.bat
 echo.
+
 goto finish
 
 :errors

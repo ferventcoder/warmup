@@ -9,3 +9,9 @@ SolutionVersion.cs
 SolutionVersion.vb
 *.cache
 *.orig
+dotnet.watchr.rb
+red.png
+green.png
+watcher_dot_net.rb
+Index.dat
+Storage.dat

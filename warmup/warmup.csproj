@@ -46,6 +46,7 @@
     <Compile Include="..\SolutionVersion.cs">
       <Link>Properties\SolutionVersion.cs</Link>
     </Compile>
+    <Compile Include="BytesReplacer.cs" />
     <Compile Include="commands\AddTemplateFolder.cs" />
     <Compile Include="commands\AddTextReplacement.cs" />
     <Compile Include="commands\GenerateWarmup.cs" />

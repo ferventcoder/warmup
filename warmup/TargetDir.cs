@@ -65,21 +65,23 @@ namespace warmup
                 if (new[] {"\\.git\\"}.Contains(info.FullName)) continue;
 
                 // skip readonly and hidden files
-                if (info.IsReadOnly || (info.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden) continue;                
+                if (info.IsReadOnly || (info.Attributes & FileAttributes.Hidden) == FileAttributes.Hidden) continue;
+
+                BytesReplacer bytesReplacer = new BytesReplacer(BytesReplacer.FileEncoding(info.FullName));
 
                 //process contents
-                string contents = File.ReadAllText(info.FullName);
+                var contents = File.ReadAllBytes(info.FullName);
                 
                 // replace main token
-                contents = contents.Replace(_replacementToken, name);
+                contents = bytesReplacer.Replace(contents, _replacementToken, name);
 
                 // replace custom tokens
                 foreach (TextReplaceItem replaceItem in GetReplaceTokens())
                 {
-                    contents = contents.Replace(replaceItem.Find, replaceItem.Replace);
+                    contents = bytesReplacer.Replace(contents, replaceItem.Find, replaceItem.Replace);
                 }
 
-                File.WriteAllText(info.FullName, contents, Encoding.UTF8);
+                File.WriteAllBytes(info.FullName, contents);
             }
         }
 

@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BomTestFiles", "BomTestFile
 	ProjectSection(SolutionItems) = preProject
 		BomTestFiles\dev.yml = BomTestFiles\dev.yml
 		BomTestFiles\DynamicBlog.slnfile = BomTestFiles\DynamicBlog.slnfile
+		BomTestFiles\kata.txt = BomTestFiles\kata.txt
 	EndProjectSection
 EndProject
 Global

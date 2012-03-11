@@ -14,11 +14,17 @@ namespace warmup.Tests
 
         string fileWithoutByteOffsetMap = "BomTestFiles\\dev.yml";
 
+        string fileContainingPrecedingUnderScores = "BomTestFiles\\kata.txt";
+
         int firstFewBytes = 10;
 
         string searchFor = "__NAME__";
 
         string replaceWith = "Replaced";
+
+        byte[] source;
+
+        byte[] find;
 
         void file_encodings()
         {
@@ -38,6 +44,71 @@ namespace warmup.Tests
                 Text(fileWithoutByteOffsetMap).Replace(searchFor, replaceWith).should_be(Text(processedFile));
 
                 FirstFewBytes(fileWithoutByteOffsetMap).should_be(FirstFewBytes(processedFile));
+            };
+        }
+
+        void replacing_strings_that_have_preceding_underscores()
+        {
+            it["the content with describe___NAME__ (preceding underscores) is converted to describe_Replaced"] = () =>
+            {
+                var processedFile = Process(fileContainingPrecedingUnderScores, searchFor, replaceWith);
+
+                Text(fileContainingPrecedingUnderScores).Replace(searchFor, replaceWith).should_be("describe_Replaced");
+            };
+        }
+
+        void finding_bytes()
+        {
+            context["bytes match in the begining"] = () =>
+            {
+                before = () =>
+                {
+                    source = new byte[] { 8, 7, 8, 9, 10 };
+
+                    find = new byte[] { 8, 7, 8 };
+                };
+
+                it["returns middle index (index of 2) as the matching index"] = () =>
+                    BytesReplacer.FindBytes(source, find).should_be(0);
+            };
+
+            context["bytes match in the middle"] = () =>
+            {
+                before = () =>
+                {
+                    source = new byte[] { 8, 7, 8, 9, 10 };
+
+                    find = new byte[] { 8, 9 };
+                };
+
+                it["returns middle index (index of 2) as the matching index"] = () =>
+                    BytesReplacer.FindBytes(source, find).should_be(2);
+            };
+
+            context["bytes match at the end"] = () =>
+            {
+                before = () =>
+                {
+                    source = new byte[] { 7, 8, 9, 10 };
+
+                    find = new byte[] { 9, 10 };
+                };
+
+                it["returns last index (index of 2) as the matching index"] = () =>
+                    BytesReplacer.FindBytes(source, find).should_be(2);
+            };
+
+            context["bytes do not match"] = () =>
+            {
+                before = () =>
+                {
+                    source = new byte[] { 1, 2, 4, 5, 3 };
+
+                    find = new byte[] { 2, 3 };
+                };
+
+                it["returns index -1"] = () =>
+                    BytesReplacer.FindBytes(source, find).should_be(-1);
             };
         }
 

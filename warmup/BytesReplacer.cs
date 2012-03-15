@@ -53,7 +53,7 @@ namespace warmup
         }
 
         //http://stackoverflow.com/questions/5132890/c-sharp-replace-bytes-in-byte
-        public byte[] ReplaceBytes(byte[] src, byte[] search, byte[] repl)
+        public static byte[] ReplaceBytes(byte[] src, byte[] search, byte[] repl)
         {
             byte[] dst = null;
 
@@ -80,32 +80,26 @@ namespace warmup
 
             return dst;
         }
-        
-        public int FindBytes(byte[] source, byte[] find)
+
+        public static int FindBytes(byte[] source, byte[] find, int index = 0)
         {
-            int index = -1;
+            if (index >= source.Length) return -1;
 
-            int matchIndex = 0;
+            if (Match(source, find, index)) return index;
 
-            for (int i = 0; i < source.Length; i++)
+            return FindBytes(source, find, ++index);
+        }
+
+        public static bool Match(byte[] source, byte[] find, int index)
+        {
+            for (int i = 0; i < find.Length; i++, index++)
             {
-                if (source[i] == find[matchIndex])
-                {
-                    if (matchIndex == (find.Length - 1))
-                    {
-                        index = i - matchIndex;
-                        break;
-                    }
+                if (index >= source.Length) return false;
 
-                    matchIndex++;
-                }
-                else
-                {
-                    matchIndex = 0;
-                }
+                if (source[index] != find[i]) return false;
             }
 
-            return index;
+            return true;
         }
     }
 }

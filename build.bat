@@ -20,7 +20,10 @@ msbuild
 
 echo.
 echo RUNNING TESTS
-lib\nspec.0.9.58\tools\NSpecRunner.exe warmup.Tests\bin\Debug\warmup.Tests.dll
+cd warmup.Tests\bin\Debug
+..\..\..\lib\nspec.0.9.58\tools\NSpecRunner.exe warmup.Tests.dll
+
+cd ..\..\..\
 
 if %ERRORLEVEL% NEQ 0 goto errors
 
